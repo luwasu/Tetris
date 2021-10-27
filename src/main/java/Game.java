@@ -4,6 +4,7 @@ import tetris.gui.GUI;
 public class Game {
 
     private static final GUI gui = new GUI(10, 20);
+    private static Block block;
 
 
     public Game() {
@@ -15,7 +16,7 @@ public class Game {
 
     public static void createBlock(int i, int i1, int i2) {
         System.out.println("call method \"createBlock\"");
-        Block block = new Block(i, i1, i2);
+        block = new Block(i, i1, i2);
         gui.drawBlock(block);
     }
 
