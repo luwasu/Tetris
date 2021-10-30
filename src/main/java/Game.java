@@ -5,56 +5,16 @@ import tetris.gui.GUI;
 
 public class Game {
 
-    private static final GUI gui = new GUI(10, 20);
+    //    private static final GUI gui = new GUI(10, 20);
+//    private static GUI gui;
     private static Block block;
 
-    public Game() {
-        start();
+    public Game(GUI gui) {
+        start(gui);
     }
 
 
-    //********* Handles all the movements of the blocks ************************
-    private static final ActionHandler actionHandler = new ActionHandler() {
-        @Override
-        public void moveDown() {
-            block.y--;
-            gui.clear();
-            gui.drawBlock(block);
-        }
-
-        @Override
-        public void moveLeft() {
-            block.x--;
-            gui.clear();
-            gui.drawBlock(block);
-        }
-
-        @Override
-        public void moveRight() {
-            block.x++;
-            gui.clear();
-            gui.drawBlock(block);
-        }
-
-        @Override
-        public void rotateLeft() {
-
-        }
-
-        @Override
-        public void rotateRight() {
-
-        }
-
-        @Override
-        public void drop() {
-
-        }
-    };
-//***************************************************
-
-
-    public static void start() {
+    public static void start(GUI gui) {
         System.out.println("This method will start the game!");
 
         /*
@@ -66,22 +26,58 @@ public class Game {
          * colors of blocks
          * i2: red = 1, yellow = 2, pink = 3, blue = 4, turquoise = 5, green = 6, grey = 7,
          * */
-        createBlock(9, 19, 3);
+        // TODO create random colors with random number generator
+        createBlock(9, 19, 6, gui);
 
         while (true) {
-            handleEvent();
+            handleEvent(gui);
+            updateGUI(gui);
         }
 
     }
 
-    public static void createBlock(int i, int i1, int i2) {
+    public static void createBlock(int i, int i1, int i2, GUI gui) {
         System.out.println("call method \"createBlock\"");
         block = new Block(i, i1, i2);
         gui.drawBlock(block);
     }
 
-    public static void handleEvent() {
+    public static void handleEvent(GUI gui) {
         System.out.println("call method \"handleEvent\"");
+
+        //********* Handles all the movements of the blocks ************************
+        final ActionHandler actionHandler = new ActionHandler() {
+            @Override
+            public void moveDown() {
+                block.y--;
+            }
+
+            @Override
+            public void moveLeft() {
+                block.x--;
+            }
+
+            @Override
+            public void moveRight() {
+                block.x++;
+            }
+
+            @Override
+            public void rotateLeft() {
+
+            }
+
+            @Override
+            public void rotateRight() {
+
+            }
+
+            @Override
+            public void drop() {
+
+            }
+        };
+
 
         ActionEvent event = gui.waitEvent();
         switch (event) {
@@ -89,10 +85,15 @@ public class Game {
             case MOVE_RIGHT -> actionHandler.moveRight();
             case MOVE_DOWN -> actionHandler.moveDown();
         }
+//***************************************************
     }
 
-    public static void updateGUI() {
+    public static void updateGUI(GUI gui) {
         System.out.println("call method \"updateGUI\"");
+        gui.clear();
+        gui.drawBlock(block);
     }
-
 }
+
+
+
