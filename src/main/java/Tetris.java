@@ -6,5 +6,6 @@ public class Tetris {
 
         GUI gui = new GUI(10,20);
         Game game = new Game(gui);
+
     }
 }
