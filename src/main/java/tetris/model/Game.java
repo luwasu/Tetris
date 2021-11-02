@@ -1,3 +1,5 @@
+package tetris.model;
+
 import tetris.gui.ActionEvent;
 import tetris.gui.Block;
 import tetris.gui.GUI;
@@ -8,12 +10,18 @@ public class Game {
 
 
     private final GUI gui;
+    private final int width;
+    private final int height;
     private Block block;
-    private int width;
-    private int height;
     int randomInt = new Random().nextInt();
 
-
+    /**
+     * Constructs a game with the specified graphical user interface.
+     *
+     * @param width  the width of the field
+     * @param height the height of the field
+     * @param gui    the graphical user interface
+     */
     public Game(int width, int height, GUI gui) {
         this.width = width;
         this.height = height;
@@ -34,7 +42,6 @@ public class Game {
          * i2: red = 1, yellow = 2, pink = 3, blue = 4, turquoise = 5, green = 6, grey = 7,
          * */
         createBlock();
-
         while (true) {
             ActionEvent event = gui.waitEvent();
             handleEvent(event);
