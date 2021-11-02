@@ -1,16 +1,17 @@
 import tetris.gui.GUI;
 
 public class Tetris {
-
-//    setup and use a default size
-//    one should never add literal numbers in your code
-//    one can hand over the GUI in the start method
-//    refactor the Game class because the chain of gui handover is to complext
-
+     /**
+     * Creates a Tetris game using a graphical user interface and starts the game.
+     *
+     * @param args the width and height of the field
+     */
     public static void main(String[] args) {
+        int width = 10;
+        int height = 20;
 
-        GUI gui = new GUI(10,20);
-        Game game = new Game(gui);
-
+        GUI gui = new GUI(width, height);
+        Game game = new Game(width, height, gui);
+        game.start();
     }
 }

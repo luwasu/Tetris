@@ -2,24 +2,26 @@ import tetris.gui.ActionEvent;
 import tetris.gui.Block;
 import tetris.gui.GUI;
 
+import java.util.Random;
+
 public class Game {
 
-    private static Block block;
-    private static ActionEvent event;
 
-    private static int randomInt() {
-        int min = 1;
-        int max = 7;
-        int range = (max - min) + 1;
-        return (int) (Math.random() * range) + min;
+    private final GUI gui;
+    private Block block;
+    private int width;
+    private int height;
+    int randomInt = new Random().nextInt();
+
+
+    public Game(int width, int height, GUI gui) {
+        this.width = width;
+        this.height = height;
+        this.gui = gui;
     }
 
-    public Game(GUI gui) {
-        start(gui);
-    }
 
-
-    public void start(GUI gui) {
+    public void start() {
         System.out.println("This method will start the game!");
 
         /*
@@ -31,30 +33,24 @@ public class Game {
          * colors of blocks
          * i2: red = 1, yellow = 2, pink = 3, blue = 4, turquoise = 5, green = 6, grey = 7,
          * */
-        // TODO create random colors with random number generator
-        createBlock(9, 19, randomInt(), gui);
-        event = gui.waitEvent();
+        createBlock();
 
         while (true) {
-            handleEvent(gui);
-            updateGUI(gui);
+            ActionEvent event = gui.waitEvent();
+            handleEvent(event);
         }
 
     }
 
-    public void createBlock(int i, int i1, int i2, GUI gui) {
+    public void createBlock() {
         System.out.println("call method \"createBlock\"");
-        block = new Block(i, i1, i2);
-        gui.drawBlock(block);
+        block = new Block((width - 1) / 2, height - 1, randomInt);
+        updateGUI();
     }
 
-    public void handleEvent(GUI gui) {
+    public void handleEvent(ActionEvent event) {
         System.out.println("call method \"handleEvent\"");
 
-        // move this block to the top.
-
-
-        event = gui.waitEvent();
         switch (event) {
             case MOVE_LEFT -> block.x--;
             case MOVE_RIGHT -> block.x++;
@@ -62,10 +58,10 @@ public class Game {
             // Helper to find other key combos
             default -> System.out.println(event);
         }
-
+        updateGUI();
     }
 
-    public static void updateGUI(GUI gui) {
+    public void updateGUI() {
         System.out.println("call method \"updateGUI\"");
         gui.clear();
         gui.drawBlock(block);
