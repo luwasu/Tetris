@@ -1,5 +1,4 @@
 import tetris.gui.ActionEvent;
-import tetris.gui.ActionHandler;
 import tetris.gui.Block;
 import tetris.gui.GUI;
 
@@ -8,11 +7,11 @@ public class Game {
     private static Block block;
     private static ActionEvent event;
 
-    private static int randomInt(){
+    private static int randomInt() {
         int min = 1;
         int max = 7;
         int range = (max - min) + 1;
-        return (int)(Math.random() * range) + min;
+        return (int) (Math.random() * range) + min;
     }
 
     public Game(GUI gui) {
@@ -39,7 +38,6 @@ public class Game {
         while (true) {
             handleEvent(gui);
             updateGUI(gui);
-
         }
 
     }
@@ -53,49 +51,18 @@ public class Game {
     public void handleEvent(GUI gui) {
         System.out.println("call method \"handleEvent\"");
 
-        //********* Handles all the movements of the blocks ************************
-        final ActionHandler actionHandler = new ActionHandler() {
-            @Override
-            public void moveDown() {
-                block.y--;
-            }
-
-            @Override
-            public void moveLeft() {
-                block.x--;
-            }
-
-            @Override
-            public void moveRight() {
-                block.x++;
-            }
-
-            @Override
-            public void rotateLeft() {
-
-            }
-
-            @Override
-            public void rotateRight() {
-
-            }
-
-            @Override
-            public void drop() {
-
-            }
-        };
+        // move this block to the top.
 
 
         event = gui.waitEvent();
         switch (event) {
-            case MOVE_LEFT -> actionHandler.moveLeft();
-            case MOVE_RIGHT -> actionHandler.moveRight();
-            case MOVE_DOWN -> actionHandler.moveDown();
+            case MOVE_LEFT -> block.x--;
+            case MOVE_RIGHT -> block.x++;
+            case MOVE_DOWN -> block.y--;
             // Helper to find other key combos
             default -> System.out.println(event);
         }
-    //***************************************************
+
     }
 
     public static void updateGUI(GUI gui) {
