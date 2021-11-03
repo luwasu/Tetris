@@ -70,6 +70,15 @@ public class Game {
 
     public void updateGUI() {
         System.out.println("call method \"updateGUI\"");
+
+        if (block.y == -1) {
+            block.y++;
+        } else if (block.x == width) {
+            block.x--;
+        } else if (block.x == -1) {
+            block.x++;
+        }
+
         gui.clear();
         gui.drawBlock(block);
     }
