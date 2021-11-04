@@ -1,19 +1,19 @@
 package tetris.model;
 
 import tetris.gui.ActionEvent;
-import tetris.gui.Block;
 import tetris.gui.GUI;
 
-import java.util.Random;
+import java.util.logging.Logger;
 
 public class Game {
 
 
     private final GUI gui;
+    private Figure figure;
     private final int width;
     private final int height;
-    private Block block;
-    int randomInt = new Random().nextInt();
+    private static final Logger LOGGER = Logger.getLogger("Game.class");
+
 
     /**
      * Constructs a game with the specified graphical user interface.
@@ -50,18 +50,19 @@ public class Game {
     }
 
     public void createBlock() {
-        System.out.println("call method \"createBlock\"");
-        block = new Block((width - 1) / 2, height - 1, randomInt);
+        LOGGER.info("call method \"createBlock\"");
+
+        figure = new Figure((width - 1) / 2, height - 1);
         updateGUI();
     }
 
     public void handleEvent(ActionEvent event) {
-        System.out.println("call method \"handleEvent\"");
+        LOGGER.info("call method \"handleEvent\"");
 
         switch (event) {
-            case MOVE_LEFT -> block.x--;
-            case MOVE_RIGHT -> block.x++;
-            case MOVE_DOWN -> block.y--;
+            case MOVE_LEFT -> figure.move(-1, 0);
+            case MOVE_RIGHT -> figure.move(+1, 0);
+            case MOVE_DOWN -> figure.move(0, -1);
             // Helper to find other key combos
             default -> System.out.println(event);
         }
@@ -69,18 +70,9 @@ public class Game {
     }
 
     public void updateGUI() {
-        System.out.println("call method \"updateGUI\"");
-
-        if (block.y == -1) {
-            block.y++;
-        } else if (block.x == width) {
-            block.x--;
-        } else if (block.x == -1) {
-            block.x++;
-        }
-
+        LOGGER.info("call method \"updateGUI\"");
         gui.clear();
-        gui.drawBlock(block);
+        gui.drawBlocks(figure.getBlock());
     }
 }
 
