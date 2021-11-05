@@ -2,7 +2,9 @@ package tetris.model;
 
 import tetris.gui.ActionEvent;
 import tetris.gui.GUI;
+import tetris.model.Figures.*;
 
+import java.util.Random;
 import java.util.logging.Logger;
 
 public class Game {
@@ -41,7 +43,7 @@ public class Game {
          * colors of blocks
          * i2: red = 1, yellow = 2, pink = 3, blue = 4, turquoise = 5, green = 6, grey = 7,
          * */
-        createBlock();
+        createFigure();
         while (true) {
             ActionEvent event = gui.waitEvent();
             handleEvent(event);
@@ -49,20 +51,33 @@ public class Game {
 
     }
 
-    public void createBlock() {
-        LOGGER.info("call method \"createBlock\"");
+    public void createFigure() {
 
-        figure = new Figure((width - 1) / 2, height - 1);
+        int xOfBlock = (width - 1) / 2;
+        int yOfBlock = height - 1;
+
+        // default range is from(0 to 14) +1 at the end makes the range from(1 to 15)
+        Random rand = new Random();
+        switch (rand.nextInt(7) + 1) {
+            case 1 -> figure = new IFigure(xOfBlock, yOfBlock);
+            case 2 -> figure = new JFigure(xOfBlock, yOfBlock);
+            case 3 -> figure = new LFigure(xOfBlock, yOfBlock);
+            case 4 -> figure = new TFigure(xOfBlock, yOfBlock);
+            case 5 -> figure = new OFigure(xOfBlock, yOfBlock);
+            case 6 -> figure = new SFigure(xOfBlock, yOfBlock);
+            case 7 -> figure = new ZFigure(xOfBlock, yOfBlock);
+        }
+
         updateGUI();
     }
 
     public void handleEvent(ActionEvent event) {
-        LOGGER.info("call method \"handleEvent\"");
 
         switch (event) {
             case MOVE_LEFT -> figure.move(-1, 0);
             case MOVE_RIGHT -> figure.move(+1, 0);
             case MOVE_DOWN -> figure.move(0, -1);
+            case ROTATE_LEFT -> figure.rotate(0);
             // Helper to find other key combos
             default -> System.out.println(event);
         }
@@ -70,7 +85,7 @@ public class Game {
     }
 
     public void updateGUI() {
-        LOGGER.info("call method \"updateGUI\"");
+
         gui.clear();
         gui.drawBlocks(figure.getBlock());
     }
