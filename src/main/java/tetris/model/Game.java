@@ -1,6 +1,6 @@
 package tetris.model;
 
-import tetris.gui.ActionEvent;
+import tetris.gui.ActionHandler;
 import tetris.gui.GUI;
 import tetris.model.Figures.*;
 
@@ -31,13 +31,9 @@ public class Game {
 
 
     public void start() {
-        System.out.println("This method will start the game!");
-
         createFigure();
-        while (true) {
-            ActionEvent event = gui.waitEvent();
-            handleEvent(event);
-        }
+        FigureController figureController = new FigureController();
+        gui.setActionHandler(figureController);
 
     }
 
@@ -62,22 +58,48 @@ public class Game {
         updateGUI();
     }
 
-    public void handleEvent(ActionEvent event) {
-
-        switch (event) {
-            case MOVE_LEFT -> figure.move(-1, 0);
-            case MOVE_RIGHT -> figure.move(+1, 0);
-            case MOVE_DOWN -> figure.move(0, -1);
-            case ROTATE_LEFT -> figure.rotate(-1);
-            case ROTATE_RIGHT -> figure.rotate(1);
-        }
-        updateGUI();
-    }
-
     public void updateGUI() {
         gui.clear();
         gui.drawBlocks(figure.getBlock());
     }
+
+    private class FigureController implements ActionHandler {
+        @Override
+        public void moveDown() {
+            figure.move(0, -1);
+            updateGUI();
+        }
+
+        @Override
+        public void moveLeft() {
+            figure.move(-1, 0);
+            updateGUI();
+        }
+
+        @Override
+        public void moveRight() {
+            figure.move(+1, 0);
+            updateGUI();
+        }
+
+        @Override
+        public void rotateLeft() {
+            figure.rotate(-1);
+            updateGUI();
+        }
+
+        @Override
+        public void rotateRight() {
+            figure.rotate(1);
+            updateGUI();
+        }
+
+        @Override
+        public void drop() {
+            updateGUI();
+        }
+    }
+
 }
 
 
