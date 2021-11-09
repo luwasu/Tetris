@@ -1,17 +1,16 @@
 package tetris.model.Figures;
 
 import tetris.gui.Block;
+import tetris.model.Figure;
 
 public class TFigure extends Figure {
 
-    private static final int color = 6;
+    private static final int COLOR = 6;
 
     public TFigure(int x, int y) {
-        super(x, y);
-        blocks = new Block[]{
-                new Block(x++, y, color),
-                new Block(x, y, color),
-                new Block((++x), y, color),
-                new Block(--x, ++y, color),};
+        blocks[0] = new Block(x, y, COLOR);
+        blocks[1] = new Block(x - 1, y, COLOR);
+        blocks[2] = new Block(x + 1, y, COLOR);
+        blocks[3] = new Block(x, y - 1, COLOR);
     }
 }
