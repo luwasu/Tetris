@@ -13,7 +13,7 @@ public class Field {
         this.width = width;
     }
 
-    public boolean detectCollision(Block[] blocks) throws CollisionException {
+    public void detectCollision(Block[] blocks) throws CollisionException {
 
         for (Block block : blocks) {
             if (block.y ==  -1 || block.x < 0 || block.x > getWidth()-1 ){
@@ -21,7 +21,6 @@ public class Field {
             }
         }
 
-        return false;
     }
 
     public int getHeight() {
