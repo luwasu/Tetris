@@ -71,7 +71,6 @@ public class Game {
         Field field = new Field(width, height);
 
 
-
         @Override
         public void moveDown() {
 
@@ -88,7 +87,7 @@ public class Game {
         @Override
         public void moveLeft() {
 
-           figure.getBlock();
+            figure.getBlock();
 
             try {
                 figure.move(-1, 0);
@@ -140,10 +139,19 @@ public class Game {
 
         @Override
         public void drop() {
-            updateGUI();
+            while (true) {
+                try {
+                    figure.move(0, -1);
+                    field.detectCollision(figure.blocks);
+                } catch (CollisionException e) {
+                    e.printStackTrace();
+                    figure.move(0, 1);
+                    break;
+                }
+                updateGUI();
+            }
         }
     }
-
 }
 
 
