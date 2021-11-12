@@ -13,6 +13,7 @@ public class Game {
     private Figure figure;
     private final int width;
     private final int height;
+
     private static final Logger LOGGER = Logger.getLogger("Game.class");
 
 
@@ -33,8 +34,8 @@ public class Game {
     public void start() {
         createFigure();
         FigureController figureController = new FigureController();
-        gui.setActionHandler(figureController);
 
+        gui.setActionHandler(figureController);
     }
 
     public void createFigure() {
@@ -64,33 +65,76 @@ public class Game {
     }
 
     private class FigureController implements ActionHandler {
+
+        final int width = Game.this.width;
+        final int height = Game.this.height;
+        Field field = new Field(width, height);
+
+
+
         @Override
         public void moveDown() {
-            figure.move(0, -1);
+
+            try {
+                figure.move(0, -1);
+                field.detectCollision(figure.blocks);
+            } catch (CollisionException e) {
+                e.printStackTrace();
+                figure.move(0, 1);
+            }
             updateGUI();
         }
 
         @Override
         public void moveLeft() {
-            figure.move(-1, 0);
+
+           figure.getBlock();
+
+            try {
+                figure.move(-1, 0);
+                field.detectCollision(figure.blocks);
+            } catch (CollisionException e) {
+                e.printStackTrace();
+                figure.move(1, 0);
+            }
             updateGUI();
         }
 
         @Override
         public void moveRight() {
-            figure.move(+1, 0);
+
+            try {
+                figure.move(+1, 0);
+                field.detectCollision(figure.blocks);
+            } catch (CollisionException e) {
+                e.printStackTrace();
+                figure.move(-1, 0);
+            }
             updateGUI();
         }
 
         @Override
         public void rotateLeft() {
-            figure.rotate(-1);
+
+            try {
+                figure.rotate(-1);
+                field.detectCollision(figure.blocks);
+            } catch (CollisionException e) {
+                e.printStackTrace();
+                figure.rotate(1);
+            }
             updateGUI();
         }
 
         @Override
         public void rotateRight() {
-            figure.rotate(1);
+            try {
+                figure.rotate(1);
+                field.detectCollision(figure.blocks);
+            } catch (CollisionException e) {
+                e.printStackTrace();
+                figure.rotate(-1);
+            }
             updateGUI();
         }
 
