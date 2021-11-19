@@ -2,7 +2,7 @@ package tetris.model;
 
 import tetris.gui.ActionHandler;
 import tetris.gui.GUI;
-import tetris.model.Figures.*;
+import tetris.model.figures.*;
 
 import java.util.logging.Logger;
 
@@ -11,8 +11,7 @@ public class Game {
 
     private final GUI gui;
     private Figure figure;
-    private final int width;
-    private final int height;
+    private final Field field;
 
     private static final Logger LOGGER = Logger.getLogger("Game.class");
 
@@ -25,23 +24,20 @@ public class Game {
      * @param gui    the graphical user interface
      */
     public Game(int width, int height, GUI gui) {
-        this.width = width;
-        this.height = height;
         this.gui = gui;
+        this.field = new Field(width, height);
     }
 
 
     public void start() {
         createFigure();
-        FigureController figureController = new FigureController();
-
-        gui.setActionHandler(figureController);
+        gui.setActionHandler(new FigureController());
     }
 
     public void createFigure() {
 
-        int xOfBlock = (width - 1) / 2;
-        int yOfBlock = height - 1;
+        int xOfBlock = (field.getWidth() - 1) / 2;
+        int yOfBlock = field.getHeight() - 1;
 
         // default range is from 0 - 6
         int type = (int) (7 * Math.random());
@@ -59,16 +55,15 @@ public class Game {
         updateGUI();
     }
 
-    public void updateGUI() {
-        gui.clear();
-        gui.drawBlocks(figure.getBlock());
-    }
 
+    /**
+     * The class FigureController is used to control the figure of the Tetris game.
+     **/
     private class FigureController implements ActionHandler {
 
-        final int width = Game.this.width;
-        final int height = Game.this.height;
-        Field field = new Field(width, height);
+//        final int width = Game.this.width;
+//        final int height = Game.this.height;
+//        Field field = new Field(width, height);
 
 
         @Override
@@ -76,27 +71,28 @@ public class Game {
 
             try {
                 figure.move(0, -1);
-                field.detectCollision(figure.blocks);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(0, 1);
             }
-            updateGUI();
         }
 
         @Override
         public void moveLeft() {
 
-            figure.getBlock();
+            figure.getBlocks();
 
             try {
                 figure.move(-1, 0);
-                field.detectCollision(figure.blocks);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(1, 0);
             }
-            updateGUI();
+
         }
 
         @Override
@@ -104,12 +100,12 @@ public class Game {
 
             try {
                 figure.move(+1, 0);
-                field.detectCollision(figure.blocks);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(-1, 0);
             }
-            updateGUI();
         }
 
         @Override
@@ -117,40 +113,46 @@ public class Game {
 
             try {
                 figure.rotate(-1);
-                field.detectCollision(figure.blocks);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.rotate(1);
             }
-            updateGUI();
         }
 
         @Override
         public void rotateRight() {
             try {
                 figure.rotate(1);
-                field.detectCollision(figure.blocks);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.rotate(-1);
             }
-            updateGUI();
         }
 
         @Override
         public void drop() {
-            while (true) {
-                try {
+            try {
+                while (true) {
                     figure.move(0, -1);
-                    field.detectCollision(figure.blocks);
-                } catch (CollisionException e) {
-                    e.printStackTrace();
-                    figure.move(0, 1);
-                    break;
+                    field.detectCollision(figure.getBlocks());
+                    updateGUI();
                 }
-                updateGUI();
+            } catch (CollisionException e) {
+                figure.move(0, 1);
             }
         }
+    }
+
+    /**
+     * Updates the graphical user interface according to the current state of the game.
+     */
+    public void updateGUI() {
+        gui.clear();
+        gui.drawBlocks(figure.getBlocks());
     }
 }
 

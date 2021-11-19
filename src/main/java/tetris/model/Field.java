@@ -13,21 +13,22 @@ public class Field {
         this.width = width;
     }
 
-    public void detectCollision(Block[] blocks) throws CollisionException {
-
-        for (Block block : blocks) {
-            if (block.y ==  -1 || block.x < 0 || block.x > getWidth()-1 ){
-                throw new CollisionException("A collision with the game field has occurred.");
-            }
-        }
-
-    }
-
     public int getHeight() {
         return height;
     }
 
     public int getWidth() {
         return width;
+    }
+
+
+    public void detectCollision(Block[] blocks) throws CollisionException {
+
+        for (Block block : blocks) {
+            if (block.x < 0 || block.x >= width || block.y < 0 || block.y >= height) {
+                throw new CollisionException("A collision with the game field has occurred.");
+            }
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-package tetris.model.Figures;
+package tetris.model.figures;
 
 import tetris.gui.Block;
 import tetris.model.Figure;

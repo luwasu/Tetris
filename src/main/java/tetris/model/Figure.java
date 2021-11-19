@@ -7,7 +7,7 @@ public abstract class Figure {
     protected final Block[] blocks = new Block[4];
 
 
-    public Block[] getBlock() {
+    public Block[] getBlocks() {
         return blocks;
     }
 
