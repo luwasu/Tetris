@@ -34,10 +34,18 @@ public class Game {
         gui.setActionHandler(new FigureController());
     }
 
+
+    public void stop() {
+        // TODO: Stops the game by unregistering the action handler.
+        gui.setActionHandler(null);
+    }
+
+
     public void createFigure() {
 
         int xOfBlock = (field.getWidth() - 1) / 2;
         int yOfBlock = field.getHeight() - 1;
+
 
         // default range is from 0 - 6
         int type = (int) (7 * Math.random());
@@ -55,16 +63,16 @@ public class Game {
         updateGUI();
     }
 
+    private void figureLanded() {
+        field.addBlocks(figure.getBlocks());
+        start();
+    }
+
 
     /**
      * The class FigureController is used to control the figure of the Tetris game.
      **/
     private class FigureController implements ActionHandler {
-
-//        final int width = Game.this.width;
-//        final int height = Game.this.height;
-//        Field field = new Field(width, height);
-
 
         @Override
         public void moveDown() {
@@ -76,6 +84,7 @@ public class Game {
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(0, 1);
+                figureLanded();
             }
         }
 
@@ -105,6 +114,7 @@ public class Game {
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(-1, 0);
+
             }
         }
 
@@ -118,6 +128,7 @@ public class Game {
             } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.rotate(1);
+
             }
         }
 
@@ -143,6 +154,7 @@ public class Game {
                 }
             } catch (CollisionException e) {
                 figure.move(0, 1);
+                figureLanded();
             }
         }
     }
@@ -151,8 +163,8 @@ public class Game {
      * Updates the graphical user interface according to the current state of the game.
      */
     public void updateGUI() {
-        gui.clear();
         gui.drawBlocks(figure.getBlocks());
+        gui.drawBlocks(field.getSetOfBlocks());
     }
 }
 
