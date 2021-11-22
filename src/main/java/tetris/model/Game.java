@@ -31,8 +31,12 @@ public class Game {
 
 
     public void start() {
+        // TODO remove if not needed
+        FigureController figureController = new FigureController();
         createFigure();
         gui.setActionHandler(new FigureController());
+        figureController.moveDown();
+
     }
 
 
@@ -73,7 +77,7 @@ public class Game {
 
     }
 
-    // Check if the figure has landed within the field and add the individual blocks to a HashSet List
+    // Check if the figure has landed within the field and add the individual blocks to a HashSet
     private void figureLanded() {
         field.addBlocks(figure.getBlocks());
         start();
@@ -85,18 +89,26 @@ public class Game {
      **/
     private class FigureController implements ActionHandler {
 
+
         @Override
         public void moveDown() {
 
             try {
-                figure.move(0, -1);
-                field.detectCollision(figure.getBlocks());
-                updateGUI();
-            } catch (CollisionException e) {
+
+                while (true) {
+                    Thread.sleep(500);
+                    figure.move(0, -1);
+                    field.detectCollision(figure.getBlocks());
+                    updateGUI();
+                }
+
+            } catch (CollisionException | InterruptedException e) {
                 e.printStackTrace();
                 figure.move(0, 1);
                 figureLanded();
             }
+
+
         }
 
         @Override
@@ -158,11 +170,11 @@ public class Game {
         @Override
         public void drop() {
             try {
-                while (true) {
-                    figure.move(0, -1);
-                    field.detectCollision(figure.getBlocks());
-                    updateGUI();
-                }
+                figure.move(0, -1);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
+                // keep dropping until exception
+                drop();
             } catch (CollisionException e) {
                 figure.move(0, 1);
                 figureLanded();
