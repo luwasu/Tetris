@@ -4,6 +4,7 @@ import tetris.gui.ActionHandler;
 import tetris.gui.GUI;
 import tetris.model.figures.*;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Game {
@@ -36,7 +37,7 @@ public class Game {
 
 
     public void stop() {
-        // TODO: Stops the game by unregistering the action handler.
+        LOGGER.log(Level.INFO, "The \"stop()\" method has be called");
         gui.setActionHandler(null);
     }
 
@@ -60,9 +61,19 @@ public class Game {
             case 6 -> new ZFigure(xOfBlock, yOfBlock);
             default -> throw new IllegalStateException("Invalid type");
         };
-        updateGUI();
+
+        // Check if the next figure fits into the field
+        try {
+            field.detectCollision(figure.getBlocks());
+            updateGUI();
+        } catch (CollisionException e) {
+            e.printStackTrace();
+            stop();
+        }
+
     }
 
+    // Check if the figure has landed within the field and add the individual blocks to a HashSet List
     private void figureLanded() {
         field.addBlocks(figure.getBlocks());
         start();
