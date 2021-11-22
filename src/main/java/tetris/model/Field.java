@@ -2,7 +2,9 @@ package tetris.model;
 
 import tetris.gui.Block;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Field {
 
@@ -35,6 +37,7 @@ public class Field {
     }
 
     public void removeAllBlocks() {
+        System.out.println(getSetOfBlocks());
         this.SetOfBlocks.clear();
     }
 
