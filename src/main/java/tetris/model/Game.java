@@ -4,17 +4,15 @@ import tetris.gui.ActionHandler;
 import tetris.gui.GUI;
 import tetris.model.figures.*;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Game {
 
 
-    private final GUI gui;
-    private Figure figure;
-    private final Field field;
-
     private static final Logger LOGGER = Logger.getLogger("Game.class");
+    private final GUI gui;
+    private final Field field;
+    private Figure figure;
 
 
     /**
@@ -31,18 +29,14 @@ public class Game {
 
 
     public void start() {
-        // TODO remove if not needed
-        FigureController figureController = new FigureController();
         createFigure();
         gui.setActionHandler(new FigureController());
-        figureController.moveDown();
-
     }
 
 
     public void stop() {
-        LOGGER.log(Level.INFO, "The \"stop()\" method has be called");
         gui.setActionHandler(null);
+        figure = null;
     }
 
 
@@ -69,11 +63,10 @@ public class Game {
         // Check if the next figure fits into the field
         try {
             field.detectCollision(figure.getBlocks());
-            updateGUI();
-        } catch (CollisionException e) {
-            e.printStackTrace();
+        } catch (CollisionException ex) {
             stop();
         }
+        updateGUI();
 
     }
 
@@ -83,6 +76,13 @@ public class Game {
         start();
     }
 
+    /**
+     * Updates the graphical user interface according to the current state of the game.
+     */
+    public void updateGUI() {
+        gui.drawBlocks(figure.getBlocks());
+        gui.drawBlocks(field.getBlocks());
+    }
 
     /**
      * The class FigureController is used to control the figure of the Tetris game.
@@ -95,14 +95,12 @@ public class Game {
 
             try {
 
-                while (true) {
-                    Thread.sleep(500);
-                    figure.move(0, -1);
-                    field.detectCollision(figure.getBlocks());
-                    updateGUI();
-                }
+                figure.move(0, -1);
+                field.detectCollision(figure.getBlocks());
+                updateGUI();
 
-            } catch (CollisionException | InterruptedException e) {
+
+            } catch (CollisionException e) {
                 e.printStackTrace();
                 figure.move(0, 1);
                 figureLanded();
@@ -180,14 +178,6 @@ public class Game {
                 figureLanded();
             }
         }
-    }
-
-    /**
-     * Updates the graphical user interface according to the current state of the game.
-     */
-    public void updateGUI() {
-        gui.drawBlocks(figure.getBlocks());
-        gui.drawBlocks(field.getSetOfBlocks());
     }
 }
 
