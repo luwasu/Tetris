@@ -42,17 +42,17 @@ public class Game {
 
     public void createFigure() {
 
-//        int xOfBlock = (field.getWidth() - 1) / 2;
-//        int yOfBlock = field.getHeight() - 1;
+        int xOfBlock = (field.getWidth() - 1) / 2;
+        int yOfBlock = field.getHeight() - 1;
 
-        int xOfBlock = 1;
-        int yOfBlock = 2;
+//        int xOfBlock = 1;
+//        int yOfBlock = 5;
 
 
         // default range is from 0 - 6
         int type = (int) (7 * Math.random());
 
-        figure = switch (0) {
+        figure = switch (type) {
             case 0 -> new IFigure(xOfBlock, yOfBlock);
             case 1 -> new JFigure(xOfBlock, yOfBlock);
             case 2 -> new LFigure(xOfBlock, yOfBlock);
@@ -71,23 +71,29 @@ public class Game {
         } catch (CollisionException ex) {
             stop();
         }
-        updateGUI();
 
+        updateGUI();
     }
 
     // Check if the figure has landed within the field and add the individual blocks to a HashSet
     private void figureLanded() {
         field.addBlocks(figure.getBlocks());
+        field.removeFullRows();
         start();
     }
 
     /**
      * Updates the graphical user interface according to the current state of the game.
      */
-    public void updateGUI() {
-        gui.drawBlocks(figure.getBlocks());
+    private void updateGUI() {
+        gui.clear();
         gui.drawBlocks(field.getBlocks());
+        if (figure != null) {
+            gui.drawBlocks(figure.getBlocks());
+        }
     }
+
+
 
     /**
      * The class FigureController is used to control the figure of the Tetris game.
@@ -184,6 +190,7 @@ public class Game {
             }
         }
     }
+
 }
 
 

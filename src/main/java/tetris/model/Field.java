@@ -3,6 +3,7 @@ package tetris.model;
 import tetris.gui.Block;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Field {
@@ -40,6 +41,20 @@ public class Field {
         blocks.clear();
     }
 
+    public int removeFullRows() {
+        int nRowsRemoved = 0;
+
+        for (int i = getHeight(); i >= 0; i--) {
+            if (isRowFull(i)) {
+                removeRow(i);
+                ++nRowsRemoved;
+            }
+        }
+
+        return nRowsRemoved;
+    }
+
+
     private boolean isRowFull(int y) {
         int counter = 0;
 
@@ -48,11 +63,37 @@ public class Field {
                 counter++;
             }
         }
-        return counter == getWidth();
+
+        if (counter == getWidth()) {
+//            removeRow(y);
+            System.out.println(blocks);
+            return true;
+        } else {
+            System.out.println(blocks);
+            return false;
+        }
+
+    }
+
+    private void removeRow(int y) {
+        int counter = 0;
+
+        Iterator<Block> i = blocks.iterator();
+        while (i.hasNext()) {
+            Block s = i.next();
+
+            if (s.y == y) {
+                i.remove();
+            }
+            counter++;
+        }
+
     }
 
 
     public void detectCollision(Block[] blocks) throws CollisionException {
+
+        System.out.println(removeFullRows());
 
 
         for (Block block : blocks) {
