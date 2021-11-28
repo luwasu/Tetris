@@ -45,10 +45,6 @@ public class Game {
         int xOfBlock = (field.getWidth() - 1) / 2;
         int yOfBlock = field.getHeight() - 1;
 
-//        int xOfBlock = 1;
-//        int yOfBlock = 5;
-
-
         // default range is from 0 - 6
         int type = (int) (7 * Math.random());
 
@@ -64,7 +60,6 @@ public class Game {
         };
 
 
-
         // Check if the next figure fits into the field
         try {
             field.detectCollision(figure.getBlocks());
@@ -78,7 +73,8 @@ public class Game {
     // Check if the figure has landed within the field and add the individual blocks to a HashSet
     private void figureLanded() {
         field.addBlocks(figure.getBlocks());
-        field.removeFullRows();
+        // TODO remove println after next implementation
+        System.out.println(field.removeFullRows());
         start();
     }
 
@@ -91,8 +87,8 @@ public class Game {
         if (figure != null) {
             gui.drawBlocks(figure.getBlocks());
         }
-    }
 
+    }
 
 
     /**
@@ -118,7 +114,7 @@ public class Game {
             }
 
 
-         }
+        }
 
         @Override
         public void moveLeft() {

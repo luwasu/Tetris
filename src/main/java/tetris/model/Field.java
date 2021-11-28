@@ -41,6 +41,27 @@ public class Field {
         blocks.clear();
     }
 
+    private void removeRow(int y) {
+        int counter = 0;
+
+        // remove full rows of blocks
+        Iterator<Block> i = blocks.iterator();
+        while (i.hasNext()) {
+            Block s = i.next();
+
+            if (s.y == y) {
+                i.remove();
+            }
+            counter++;
+        }
+        // Reset blocks to the correct y coordinate
+        for (Block b : blocks) {
+            if (b.y > y) {
+                b.y--;
+            }
+        }
+    }
+
     public int removeFullRows() {
         int nRowsRemoved = 0;
 
@@ -50,8 +71,8 @@ public class Field {
                 ++nRowsRemoved;
             }
         }
-
         return nRowsRemoved;
+
     }
 
 
@@ -65,35 +86,15 @@ public class Field {
         }
 
         if (counter == getWidth()) {
-//            removeRow(y);
-            System.out.println(blocks);
             return true;
         } else {
-            System.out.println(blocks);
             return false;
-        }
-
-    }
-
-    private void removeRow(int y) {
-        int counter = 0;
-
-        Iterator<Block> i = blocks.iterator();
-        while (i.hasNext()) {
-            Block s = i.next();
-
-            if (s.y == y) {
-                i.remove();
-            }
-            counter++;
         }
 
     }
 
 
     public void detectCollision(Block[] blocks) throws CollisionException {
-
-        System.out.println(removeFullRows());
 
 
         for (Block block : blocks) {
