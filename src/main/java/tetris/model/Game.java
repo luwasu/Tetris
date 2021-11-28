@@ -42,14 +42,17 @@ public class Game {
 
     public void createFigure() {
 
-        int xOfBlock = (field.getWidth() - 1) / 2;
-        int yOfBlock = field.getHeight() - 1;
+//        int xOfBlock = (field.getWidth() - 1) / 2;
+//        int yOfBlock = field.getHeight() - 1;
+
+        int xOfBlock = 1;
+        int yOfBlock = 2;
 
 
         // default range is from 0 - 6
         int type = (int) (7 * Math.random());
 
-        figure = switch (type) {
+        figure = switch (0) {
             case 0 -> new IFigure(xOfBlock, yOfBlock);
             case 1 -> new JFigure(xOfBlock, yOfBlock);
             case 2 -> new LFigure(xOfBlock, yOfBlock);
@@ -59,6 +62,8 @@ public class Game {
             case 6 -> new ZFigure(xOfBlock, yOfBlock);
             default -> throw new IllegalStateException("Invalid type");
         };
+
+
 
         // Check if the next figure fits into the field
         try {
@@ -107,7 +112,7 @@ public class Game {
             }
 
 
-        }
+         }
 
         @Override
         public void moveLeft() {

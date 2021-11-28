@@ -3,7 +3,6 @@ package tetris.model;
 import tetris.gui.Block;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Field {
@@ -31,7 +30,9 @@ public class Field {
     }
 
     public void addBlocks(Block[] blocks) {
-        Collections.addAll(this.blocks, blocks);
+        for (Block b : blocks) {
+            this.blocks.add(b);
+        }
     }
 
 
@@ -39,7 +40,20 @@ public class Field {
         blocks.clear();
     }
 
+    private boolean isRowFull(int y) {
+        int counter = 0;
+
+        for (Block block : this.blocks) {
+            if (block.y == y) {
+                counter++;
+            }
+        }
+        return counter == getWidth();
+    }
+
+
     public void detectCollision(Block[] blocks) throws CollisionException {
+
 
         for (Block block : blocks) {
             if (block.x < 0 || block.x >= width || block.y < 0 || block.y > height) {
