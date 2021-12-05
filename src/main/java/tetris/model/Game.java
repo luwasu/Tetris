@@ -75,7 +75,7 @@ public class Game {
         field.addBlocks(figure.getBlocks());
         // TODO remove println after next implementation
         System.out.println(field.removeFullRows());
-        start();
+        createFigure();
     }
 
     /**

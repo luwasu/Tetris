@@ -65,10 +65,10 @@ public class Field {
     public int removeFullRows() {
         int nRowsRemoved = 0;
 
-        for (int i = getHeight(); i >= 0; i--) {
+        for (int i = getHeight() - 1; i >= 0; i--) {
             if (isRowFull(i)) {
                 removeRow(i);
-                ++nRowsRemoved;
+                nRowsRemoved++;
             }
         }
         return nRowsRemoved;
@@ -84,18 +84,11 @@ public class Field {
                 counter++;
             }
         }
-
-        if (counter == getWidth()) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return counter == getWidth();
     }
 
 
     public void detectCollision(Block[] blocks) throws CollisionException {
-
 
         for (Block block : blocks) {
             if (block.x < 0 || block.x >= width || block.y < 0 || block.y > height) {
@@ -109,8 +102,6 @@ public class Field {
             }
         }
     }
-
-
 }
 
 
